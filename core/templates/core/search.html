@@ -1,0 +1,27 @@
+{% extends 'core/main.html' %}
+{% load static %}
+{% block content %}
+
+{% include "core/navbar.html" %}
+<br>
+<div style="margin-top:50px; margin-left:300px">
+	<h3>Result for</h3>
+	{% for user in users %}
+	<div style="background-color: white; margin:30px; width:800px">
+		<div style="margin:10px;" class="flex flex-1 items-center space-x-4">
+            <a href="{% url 'profile' user.id %}">
+                <div style =" margin-top:15px" class="bg-gradient-to-tr from-yellow-300 to-pink-300 p-1 rounded-full">  
+                    <img src="{{user.imageURL}}" 
+                     class="bg-gray-200 border border-white rounded-full w-16 h-16">
+                </div>
+            </a>
+            <a style="text-decoration:none" href="{% url 'profile' user.id %}">
+            	<span class="block capitalize font-semibold "> {{user.user}} </span>
+            </a>
+        </div>
+        <p style="margin:10px">Biography: <span class=" capitalize font-semibold "> {{user.bio}} </span></p>
+        <p style="margin:10px">Location: <span class=" capitalize font-semibold "> {{user.location}} </span></p>
+	</div>
+	{% endfor %}
+</div>
+{% endblock content %}

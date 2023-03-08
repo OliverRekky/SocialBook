@@ -1,0 +1,102 @@
+{% extends 'core/main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+.gradient-custom-2 {
+/* fallback for old browsers */
+background: #fbc2eb;
+
+/* Chrome 10-25, Safari 5.1-6 */
+background: -webkit-linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1));
+
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1))
+}
+
+.b-img{
+	background-image: url("{% static 'images/timeline-1.jpg'%}");
+}
+</style>
+<a style="margin-left:485px; margin-top:20px" href="{% url 'index'%}" class="btn btn-outline-dark">&#x2190; Back to feed</a>
+<section class="h-100 gradient-custom-2">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-9 col-xl-7">
+        <div class="card">
+          <div class="b-img rounded-top text-white d-flex flex-row" style=" height:200px;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+              <img src="{{user.imageURL}}"
+                alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                style="width: 150px; z-index: 1">
+                {% if request.user.profile.id == user.id %}
+              	<a href="{% url 'settings' %}" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                style="z-index: 1;">
+                Edit profile
+          		</a>
+          		{% else %}
+          		{% endif %}
+            </div>
+            <div class="ms-3" style="margin-top: 130px;">
+              <h5 class="capitalize" style="color:white">{{user}}</h5>
+              <p>{{user.location}}</p>
+            </div>
+          </div>
+          <div class="p-4 text-black" style="background-color: #f8f9fa;">
+            <div class="d-flex justify-content-end text-center py-1">
+            	{% if request.user.profile.id != user.id  %}
+            	<div class="px-3">
+	            	<form method="post" action="/follow">
+	          			{% csrf_token %}
+	          			<input type="hidden" value="{{request.user.profile.user}}" name="follower">
+	          			<input type="hidden" value="{{user.user}}" name="user">
+	          			<input type="hidden" value="{{user.id}}" name="id">
+			          		<a href="{% url 'follow' %}" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+			                style="z-index: 1;">
+			               <button> {{button_text}}</button>
+			            	</a>
+	            	</form>
+            	</div>
+            	{% else %}
+            	{% endif %}
+              <div>
+                <p class="mb-1 h5">{{posts_count}}</p>
+                <p class="small text-muted mb-0">Posts</p>
+              </div>
+              <div class="px-3">
+                <p class="mb-1 h5">{{followers}}</p>
+                <p class="small text-muted mb-0">Followers</p>
+              </div>
+              <div>
+                <p class="mb-1 h5">{{following}}</p>
+                <p class="small text-muted mb-0">Following</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4 text-black">
+            <div class="mb-5">
+              <p class="lead fw-normal mb-1">About</p>
+              <div class="p-4" style="background-color: #f8f9fa;">
+                <p class="font-italic mb-1">{{user.bio}}</p>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <p class="lead fw-normal mb-0">Recent photos</p>
+              <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+            </div>
+            <div class="row g-2">
+            {% for post in posts %}
+              <div class="col mb-6">
+                <img src="{{post.postImageURL}}"
+                  alt="image 1" class="w-100 rounded-3">
+              </div>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
